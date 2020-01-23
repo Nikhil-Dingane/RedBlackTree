@@ -1,0 +1,24 @@
+public void display()
+	{
+		System.out.print("{");
+		MyStack<TreeNode> nodes = new MyStack<TreeNode>();
+		TreeNode current = this.rootNode;
+
+		while (!nodes.isEmpty() || current != null) 
+		{
+
+			if (current != null) 
+			{
+				nodes.push(current);
+				current = current.leftChild;
+			}
+			else 
+			{
+				TreeNode node = nodes.pop();
+				System.out.print(node.nodeData+""+""+(node.parent==null?"null":node.parent.nodeData)+""+node.color+" \t");
+				current = node.rightChild;
+			}
+
+		}
+		System.out.print("}");
+	}
