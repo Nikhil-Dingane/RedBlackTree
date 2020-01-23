@@ -1,8 +1,10 @@
 class RedBlackTree<T extends Comparable<T>>
 {
+	//These are the flags for the color characterstic of TreeNode class
 	private final boolean RED=true;
 	private final boolean BLACK=false;
 	
+	//This is the roort of  tree
 	private TreeNode rootNode;
 	
 	class TreeNode
@@ -14,6 +16,7 @@ class RedBlackTree<T extends Comparable<T>>
 		TreeNode rightChild;
 		TreeNode parent;
 		
+		// Parameterised constructor of TreeNode class
 		public TreeNode(T data,boolean color)
 		{
 			this.data=data;
@@ -24,13 +27,18 @@ class RedBlackTree<T extends Comparable<T>>
 		}
 	}
 	
+	
+	//Default constructor of RedBlackTree class
 	public RedBlackTree()
 	{
 		this.rootNode=null;
 	}
 	
+	
+	//Insert function to insert node in tree
 	public void insert(T data)
 	{
+		// If tree is empty
 		if(this.rootNode==null)
 		{
 			this.rootNode=new TreeNode(data,BLACK);
@@ -40,6 +48,8 @@ class RedBlackTree<T extends Comparable<T>>
 		TreeNode temp=this.rootNode;
 		TreeNode newChild=new TreeNode(data,RED);
 		int ret;
+		
+		// Insert node in tree as like Binary Search Tree
 		while(true)
 		{
 			ret=data.compareTo(temp.data);
@@ -69,15 +79,20 @@ class RedBlackTree<T extends Comparable<T>>
 			}
 		}
 		
+		// If parent of newly inserted node is black then return
 		if(newChild.parent.color==BLACK)
 		{
 			return;
 		}
 		
+		// Uncle node of newly inserted node
 		TreeNode uncle;
 		
+		// This is the loop for fixing the tree which was unbalanced by the newly inserted node
 		while((newChild.parent!=rootNode)&&(newChild.parent.color==RED))
 		{
+			
+			// Getting uncle node
 			if(newChild.parent==newChild.parent.parent.leftChild)
 			{
 				uncle=newChild.parent.parent.rightChild;
@@ -87,13 +102,12 @@ class RedBlackTree<T extends Comparable<T>>
 				uncle=newChild.parent.parent.leftChild;
 			}
 			
+			// if uncle node is NULL or BLACK then roation and recolouring
 			if((uncle==null)||(uncle.color==BLACK))
 			{
-				//System.out.println("uncle is black or null of="+newChild.data);
-				//System.out.println("parent="+newChild.parent.parent.rightChild.data+" grandparent"+newChild.parent.parent.data);
+				
 				if((newChild.parent==newChild.parent.parent.leftChild)&&(newChild==newChild.parent.leftChild))
 				{
-					//System.out.println("LL");
 					if((newChild.parent.rightChild!=null))
 					{
 						newChild=newChild.parent;
@@ -133,9 +147,7 @@ class RedBlackTree<T extends Comparable<T>>
 					newChild.rightChild.color=(newChild.rightChild.color==RED?BLACK:RED);
 				}
 				else if((newChild.parent==newChild.parent.parent.leftChild)&&(newChild==newChild.parent.rightChild))
-				{
-					//System.out.println("LR");
-												
+				{												
 					newChild=leftRotate(newChild);
 					newChild=rightRotate(newChild);
 					newChild.color=(newChild.color==BLACK?RED:BLACK);
@@ -143,7 +155,6 @@ class RedBlackTree<T extends Comparable<T>>
 				}
 				else if((newChild.parent==newChild.parent.parent.rightChild)&&(newChild==newChild.parent.rightChild))
 				{
-					//System.out.println("RR");
 					if((newChild.parent.leftChild!=null))
 					{
 						newChild=newChild.parent;
@@ -184,12 +195,8 @@ class RedBlackTree<T extends Comparable<T>>
 					newChild.leftChild.color=(newChild.leftChild.color==RED?BLACK:RED);
 				}
 				else if((newChild.parent==newChild.parent.parent.rightChild)&&(newChild==newChild.parent.leftChild))
-				{
-					
-					//System.out.println("RL");
-					
+				{					
 					newChild=rightRotate(newChild);
-					
 					newChild.parent.parent.rightChild=newChild;
 					newChild.leftChild=newChild.parent;
 					newChild.parent=newChild.parent.parent;
@@ -200,9 +207,10 @@ class RedBlackTree<T extends Comparable<T>>
 				}
 				break;
 			}
+			
+			// Uncle's color is RED then only recolouring
 			else
 			{
-				//System.out.println("uncle is red of data="+newChild.data);
 				if(newChild.parent.color=BLACK)
 				{
 					newChild.parent.color=RED;
@@ -223,7 +231,6 @@ class RedBlackTree<T extends Comparable<T>>
 				
 				if(newChild.parent.parent!=rootNode)
 				{
-					//System.out.println("recoloring parent's parent");
 					if(newChild.parent.parent.color==BLACK)
 					{
 						newChild.parent.parent.color=RED;
@@ -236,7 +243,6 @@ class RedBlackTree<T extends Comparable<T>>
 				}
 				else
 				{
-					//System.out.println("breaking");
 					break;
 				}
 				
@@ -246,6 +252,8 @@ class RedBlackTree<T extends Comparable<T>>
 		
 	}
 	
+	
+	//Helper function for left rotation
 	public TreeNode leftRotate(TreeNode newChild)
 	{
 		
@@ -258,6 +266,7 @@ class RedBlackTree<T extends Comparable<T>>
 		return newChild;
 	}
 	
+	//Helper function for right roation
 	public TreeNode rightRotate(TreeNode newChild)
 	{
 		newChild.parent.parent.rightChild=newChild;
@@ -269,6 +278,7 @@ class RedBlackTree<T extends Comparable<T>>
 		return newChild;
 	}
 	
+	// Displays nodes of tree
 	public void display()
 	{
 		System.out.print("{");
@@ -280,20 +290,16 @@ class RedBlackTree<T extends Comparable<T>>
 
 			if (current != null) 
 			{
-				//System.out.println("display if");
 				nodes.push(current);
 				current = current.leftChild;
 				
 			}
 			else 
 			{
-				//System.out.println("display else");
 				TreeNode node = nodes.pop();
-				//System.out.println("data="+node.data+" color="+node.color+" parent="+(node.parent==null?"null":node.parent.data)+" \t");
 				System.out.print(node.data+" \t");
 				current = node.rightChild;
 			}
-			//System.out.print(current);
 			if(i==5)
 			{
 				break;
