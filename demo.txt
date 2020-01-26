@@ -1,0 +1,23 @@
+import java.io.*;
+import java.util.*;
+
+public class SearchInFile
+{
+	public static void main(String[]args) throws Exception{
+	Scanner input=new Scanner(System.in);
+	System.out.print("Enter name to find details: ");
+	String word=input.next();
+	File f=new File("c:/student.txt");
+	BufferedReader freader = new BufferedReader(new FileReader(f));
+	String s;
+	while((s = freader.readLine()) != null) {
+	String[] st = s.split(" ");
+	String id = st[0];
+	String name = st[1];
+	String marks = st[2];
+	if(name.equals(word)){
+	System.out.println(id+" "+name+" "+marks);
+	}
+	}
+  }
+}
